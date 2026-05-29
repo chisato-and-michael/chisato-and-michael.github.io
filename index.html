@@ -671,7 +671,6 @@
       <p class="sec-label">Kindly reply by 12 July 2026</p>
       <h2 class="sec-title">RSVP</h2>
       <div class="sec-div" style="background:var(--gold);opacity:0.4"></div>
-
       <!-- To connect this form to email/spreadsheet (Web3Forms/Google Sheet) -->
       <form id="rsvp-form" action="https://api.web3forms.com/submit" method="POST" onsubmit="handleRsvp(event)">
       <input type="hidden" name="access_key" value="e6f1c703-e6d1-4fdd-84df-45446503ae8a">
@@ -720,11 +719,11 @@
         <div class="guest-block">
           <div class="plus-one-toggle" onclick="togglePlusOne()" role="button" aria-pressed="false" id="toggle-btn">
             <div class="toggle-pill" id="toggle"><div class="toggle-knob"></div></div>
-            <span id="toggle-label">I'm bringing a plus one</span>
+            <span id="toggle-label">Second guest (if included in your invitation)</span>
           </div>
 
           <div id="plus-one-fields">
-            <p class="guest-block-label">Plus one details</p>
+            <p class="guest-block-label">Additional guest details</p>
             <div class="form-two-col">
               <div class="form-row"><label for="g2-first">First name</label><input type="text" id="g2-first" name="plus_one_first" placeholder="James"></div>
               <div class="form-row"><label for="g2-last">Last name</label><input type="text" id="g2-last" name="plus_one_last" placeholder="Smith"></div>
