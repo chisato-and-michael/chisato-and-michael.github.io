@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sarah &amp; James</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --teal: #506A69;
+    --cream: #F6F3EE;
+    --gold: #D6B87A;
+    --light: #F6F3EE;
+    --font-d: 'Cormorant Garamond', serif;
+    --font-b: 'Jost', sans-serif;
+  }
+
+  body {
+    font-family: var(--font-b);
+    background: var(--cream);
+    color: var(--teal);
+    font-weight: 300;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* ─── PASSWORD GATE ─────────────────────────────── */
+  #gate {
+    position: fixed;
+    inset: 0;
+    background: var(--teal);
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+  }
+  #gate h1 {
+    font-family: var(--font-d);
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 300;
+    color: var(--light);
+    margin-bottom: 0.3rem;
+  }
+  #gate .gate-sub {
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 2.5rem;
+    opacity: 0.8;
+  }
+  #gate input {
+    background: rgba(246,243,238,0.08);
+    border: 1px solid rgba(246,243,238,0.25);
+    color: var(--light);
+    font-family: var(--font-b);
+    font-size: 0.9rem;
+    font-weight: 300;
+    padding: 0.75rem 1.2rem;
+    text-align: center;
+    outline: none;
+    letter-spacing: 0.12em;
+    width: 220px;
+    border-radius: 0;
+    margin-bottom: 1rem;
+    transition: border-color 0.2s;
+    display: block;
+  }
+  #gate input:focus { border-color: var(--gold); }
+  #gate input::placeholder { opacity: 0.3; }
+  #gate button {
+    background: var(--gold);
+    color: var(--teal);
+    border: none;
+    padding: 0.75rem 2.5rem;
+    font-family: var(--font-b);
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 0;
+    transition: opacity 0.2s;
+  }
+  #gate button:hover { opacity: 0.85; }
+  #gate-error {
+    font-size: 0.75rem;
+    color: var(--gold);
+    opacity: 0;
+    margin-top: 0.75rem;
+    transition: opacity 0.2s;
+    letter-spacing: 0.06em;
+  }
+
+  /* ─── MAIN SITE ─────────────────────────────────── */
+  #site { display: none; }
+
+  /* NAV */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--cream);
+    border-bottom: 1px solid rgba(80,106,105,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2.5rem;
+    height: 56px;
+  }
+  .nav-logo {
+    font-family: var(--font-d);
+    font-size: 1.2rem;
+    letter-spacing: 0.04em;
+    color: var(--teal);
+  }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    text-decoration: none;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--teal);
+    opacity: 0.7;
+    transition: opacity 0.2s;
+  }
+  .nav-links a:hover { opacity: 1; }
+
+  /* HERO */
+  .hero {
+    background: var(--teal);
+    color: var(--light);
+    min-height: 520px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 5rem 2rem;
+  }
+  .hero-eyebrow {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+    opacity: 0.9;
+  }
+  .hero-names {
+    font-family: var(--font-d);
+    font-size: clamp(3.5rem, 8vw, 5.5rem);
+    font-weight: 300;
+    line-height: 1.05;
+    color: var(--light);
+  }
+  .hero-amp {
+    display: block;
+    font-family: var(--font-d);
+    font-style: italic;
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    color: var(--gold);
+    margin: 0.15em 0;
+    opacity: 0.8;
+  }
+  .hero-date {
+    margin-top: 2rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    opacity: 0.55;
+  }
+  .hero-divider {
+    width: 40px;
+    height: 1px;
+    background: var(--gold);
+    margin: 1.5rem auto;
+    opacity: 0.5;
+  }
+
+  /* SECTIONS */
+  section {
+    padding: 5rem 2rem;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+  .sec-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.75rem;
+  }
+  .sec-title {
+    font-family: var(--font-d);
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    font-weight: 300;
+    color: var(--teal);
+    line-height: 1.15;
+    margin-bottom: 2.5rem;
+  }
+  .sec-div {
+    width: 32px;
+    height: 1px;
+    background: var(--gold);
+    opacity: 0.6;
+    margin-bottom: 2.5rem;
+  }
+
+  /* EVENT INFO CARDS */
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.5rem;
+  }
+  .info-card {
+    background: var(--teal);
+    color: var(--light);
+    padding: 2rem 1.5rem;
+    border-radius: 2px;
+  }
+  .info-card-icon {
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.6rem;
+    opacity: 0.85;
+  }
+  .info-card-value {
+    font-family: var(--font-d);
+    font-size: 1.5rem;
+    line-height: 1.2;
+    margin-bottom: 0.3rem;
+  }
+  .info-card-sub {
+    font-size: 0.75rem;
+    opacity: 0.55;
+    letter-spacing: 0.04em;
+  }
+
+  /* SCHEDULE */
+  .schedule-list { list-style: none; }
+  .schedule-item {
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    gap: 1.5rem;
+    padding: 1.2rem 0;
+    border-bottom: 1px solid rgba(80,106,105,0.12);
+    align-items: start;
+  }
+  .schedule-time {
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    padding-top: 0.15rem;
+  }
+  .schedule-event strong {
+    display: block;
+    font-weight: 400;
+    color: var(--teal);
+    margin-bottom: 0.1rem;
+  }
+  .schedule-event span { font-size: 0.8rem; opacity: 0.55; }
+
+  /* RSVP */
+  .rsvp-section {
+    background: var(--teal);
+    padding: 5rem 2rem;
+  }
+  .rsvp-inner {
+    max-width: 580px;
+    margin: 0 auto;
+  }
+  .rsvp-section .sec-title { color: var(--light); }
+
+  .form-row { margin-bottom: 1.4rem; }
+  .form-row > label {
+    display: block;
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+    opacity: 0.85;
+  }
+  .form-row input,
+  .form-row select,
+  .form-row textarea {
+    width: 100%;
+    background: rgba(246,243,238,0.08);
+    border: 1px solid rgba(246,243,238,0.2);
+    border-radius: 0;
+    color: var(--light);
+    font-family: var(--font-b);
+    font-size: 0.88rem;
+    font-weight: 300;
+    padding: 0.7rem 0.9rem;
+    outline: none;
+    transition: border-color 0.2s;
+    -webkit-appearance: none;
+  }
+  .form-row input::placeholder,
+  .form-row textarea::placeholder { opacity: 0.3; }
+  .form-row input:focus,
+  .form-row select:focus,
+  .form-row textarea:focus { border-color: var(--gold); }
+  .form-row select option { background: var(--teal); color: var(--light); }
+  .form-two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  .radio-group {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin-top: 0.3rem;
+  }
+  .radio-group label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.82rem;
+    letter-spacing: 0.04em;
+    text-transform: none;
+    color: var(--light);
+    opacity: 0.8;
+    cursor: pointer;
+  }
+  .radio-group input[type="radio"] {
+    width: 14px;
+    height: 14px;
+    padding: 0;
+    accent-color: var(--gold);
+  }
+  .guest-block {
+    border-top: 1px solid rgba(246,243,238,0.12);
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+  }
+  .guest-block-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0.7;
+    margin-bottom: 1rem;
+  }
+  .plus-one-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+    margin-bottom: 1.5rem;
+    user-select: none;
+  }
+  .plus-one-toggle span {
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    color: var(--light);
+    opacity: 0.6;
+  }
+  .toggle-pill {
+    width: 36px;
+    height: 20px;
+    background: rgba(246,243,238,0.15);
+    border-radius: 10px;
+    position: relative;
+    transition: background 0.25s;
+    flex-shrink: 0;
+    border: 1px solid rgba(246,243,238,0.2);
+  }
+  .toggle-pill.on { background: var(--gold); }
+  .toggle-knob {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--light);
+    transition: transform 0.25s;
+  }
+  .toggle-pill.on .toggle-knob { transform: translateX(16px); }
+  #plus-one-fields { display: none; }
+
+  .btn-submit {
+    display: inline-block;
+    margin-top: 1rem;
+    background: var(--gold);
+    color: var(--teal);
+    border: none;
+    padding: 0.85rem 2.5rem;
+    font-family: var(--font-b);
+    font-size: 0.7rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 0;
+    transition: opacity 0.2s;
+  }
+  .btn-submit:hover { opacity: 0.85; }
+
+  /* WHERE TO STAY */
+  .stay-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+  }
+  .stay-card {
+    border: 1px solid rgba(80,106,105,0.18);
+    padding: 1.75rem 1.5rem;
+    border-radius: 2px;
+  }
+  .stay-tag {
+    display: inline-block;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid var(--gold);
+    padding: 0.2rem 0.55rem;
+    border-radius: 1px;
+    margin-bottom: 0.8rem;
+    opacity: 0.8;
+  }
+  .stay-name {
+    font-family: var(--font-d);
+    font-size: 1.25rem;
+    margin-bottom: 0.4rem;
+  }
+  .stay-detail { font-size: 0.78rem; opacity: 0.55; margin-bottom: 0.2rem; }
+  .stay-link {
+    display: inline-block;
+    margin-top: 0.8rem;
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--teal);
+    text-decoration: none;
+    border-bottom: 1px solid var(--gold);
+    padding-bottom: 1px;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+  }
+  .stay-link:hover { opacity: 1; }
+
+  /* REGISTRY — currently hidden, see HTML comment below */
+  .registry-section {
+    text-align: center;
+    padding: 5rem 2rem;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .registry-section p {
+    font-size: 0.88rem;
+    opacity: 0.6;
+    margin-bottom: 2.5rem;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .registry-btns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+  }
+  .btn-outline {
+    display: inline-block;
+    padding: 0.8rem 2rem;
+    border: 1px solid rgba(80,106,105,0.35);
+    color: var(--teal);
+    text-decoration: none;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    border-radius: 0;
+    transition: background 0.2s, color 0.2s;
+  }
+  .btn-outline:hover { background: var(--teal); color: var(--light); }
+  .btn-gold { border-color: var(--gold); color: var(--gold); }
+  .btn-gold:hover { background: var(--gold); color: var(--teal); }
+
+  /* FOOTER */
+  footer {
+    background: var(--teal);
+    color: var(--light);
+    text-align: center;
+    padding: 2.5rem 2rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+  }
+  .footer-names {
+    font-family: var(--font-d);
+    font-size: 1.5rem;
+    font-style: italic;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    nav { padding: 0 1.2rem; }
+    .nav-links { gap: 1.2rem; }
+    .form-two-col { grid-template-columns: 1fr; }
+    section { padding: 3.5rem 1.2rem; }
+    .rsvp-section { padding: 3.5rem 1.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════
+     PASSWORD GATE
+     Change SITE_PASSWORD in the <script> at the bottom.
+     ═══════════════════════════════════════════════════ -->
+<div id="gate">
+  <h1>Sarah &amp; James</h1>
+  <p class="gate-sub">Enter the password to continue</p>
+  <input type="password" id="pw-input" placeholder="password"
+         onkeydown="if(event.key==='Enter') checkPw()">
+  <button onclick="checkPw()">Enter</button>
+  <p id="gate-error">Incorrect password — please try again</p>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════
+     MAIN SITE (revealed after correct password)
+     ═══════════════════════════════════════════════════ -->
+<div id="site">
+
+  <!-- NAV
+       When registry is ready: uncomment the Registry nav link below -->
+  <nav>
+    <div class="nav-logo">S &amp; J</div>
+    <ul class="nav-links">
+      <li><a href="#details">Details</a></li>
+      <li><a href="#rsvp">RSVP</a></li>
+      <li><a href="#stay">Where to stay</a></li>
+      <!-- <li><a href="#registry">Registry</a></li> -->
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <p class="hero-eyebrow">We're getting married</p>
+    <h1 class="hero-names">
+      Sarah
+      <span class="hero-amp">&amp;</span>
+      James
+    </h1>
+    <div class="hero-divider"></div>
+    <p class="hero-date">14 June 2026 &nbsp;·&nbsp; Berlin, Germany</p>
+  </div>
+
+  <!-- ─── EVENT DETAILS ─── -->
+  <section id="details">
+    <p class="sec-label">The day</p>
+    <h2 class="sec-title">Event details</h2>
+    <div class="sec-div"></div>
+
+    <div class="info-grid">
+      <div class="info-card">
+        <p class="info-card-icon">Date</p>
+        <p class="info-card-value">14 June<br>2026</p>
+        <p class="info-card-sub">Sunday</p>
+      </div>
+      <div class="info-card">
+        <p class="info-card-icon">Ceremony</p>
+        <p class="info-card-value">3:00 PM</p>
+        <p class="info-card-sub">Doors open at 2:30</p>
+      </div>
+      <div class="info-card">
+        <p class="info-card-icon">Venue</p>
+        <p class="info-card-value">Schloss Glienicke</p>
+        <p class="info-card-sub">Königstr. 36, Berlin</p>
+      </div>
+      <div class="info-card">
+        <p class="info-card-icon">Dress code</p>
+        <p class="info-card-value">Smart casual</p>
+        <p class="info-card-sub">Garden-friendly footwear</p>
+      </div>
+    </div>
+
+    <h3 style="font-family:var(--font-d);font-size:1.6rem;font-weight:300;margin-top:4rem;margin-bottom:1.5rem">
+      Schedule
+    </h3>
+    <ul class="schedule-list">
+      <li class="schedule-item">
+        <span class="schedule-time">2:30 PM</span>
+        <div class="schedule-event"><strong>Guests arrive</strong><span>Welcome drinks in the garden</span></div>
+      </li>
+      <li class="schedule-item">
+        <span class="schedule-time">3:00 PM</span>
+        <div class="schedule-event"><strong>Ceremony</strong><span>Palace chapel — approx. 45 minutes</span></div>
+      </li>
+      <li class="schedule-item">
+        <span class="schedule-time">4:00 PM</span>
+        <div class="schedule-event"><strong>Cocktail hour</strong><span>Terrace &amp; gardens</span></div>
+      </li>
+      <li class="schedule-item">
+        <span class="schedule-time">6:00 PM</span>
+        <div class="schedule-event"><strong>Dinner &amp; speeches</strong><span>Great Hall</span></div>
+      </li>
+      <li class="schedule-item">
+        <span class="schedule-time">9:00 PM</span>
+        <div class="schedule-event"><strong>Dancing</strong><span>Until midnight</span></div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- ─── RSVP ─── -->
+  <div class="rsvp-section" id="rsvp">
+    <div class="rsvp-inner">
+      <p class="sec-label">Kindly reply by 1 May 2026</p>
+      <h2 class="sec-title">RSVP</h2>
+      <div class="sec-div" style="background:var(--gold);opacity:0.4"></div>
+
+      <!-- To connect this form to email/spreadsheet, sign up at formspree.io,
+           then replace the onsubmit handler with:
+           action="https://formspree.io/f/YOUR_FORM_ID" method="POST"
+           and remove the onsubmit attribute. -->
+      <form id="rsvp-form" onsubmit="handleRsvp(event)">
+
+        <div class="form-row">
+          <label>Will you be attending?</label>
+          <div class="radio-group">
+            <label><input type="radio" name="attending" value="yes" checked> Joyfully accepts</label>
+            <label><input type="radio" name="attending" value="no"> Regretfully declines</label>
+          </div>
+        </div>
+
+        <!-- Guest 1 -->
+        <div class="guest-block">
+          <p class="guest-block-label">Your details</p>
+          <div class="form-two-col">
+            <div class="form-row"><label for="g1-first">First name</label><input type="text" id="g1-first" name="first_name" placeholder="Sarah"></div>
+            <div class="form-row"><label for="g1-last">Last name</label><input type="text" id="g1-last" name="last_name" placeholder="Smith"></div>
+          </div>
+          <div class="form-row">
+            <label for="g1-email">Email address</label>
+            <input type="email" id="g1-email" name="email" placeholder="sarah@example.com">
+          </div>
+          <div class="form-row">
+            <label for="g1-diet">Dietary requirements</label>
+            <select id="g1-diet" name="dietary_1">
+              <option value="">None</option>
+              <option>Vegetarian</option>
+              <option>Vegan</option>
+              <option>Gluten-free</option>
+              <option>Dairy-free</option>
+              <option>Nut allergy</option>
+              <option>Other (please note below)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Plus one toggle -->
+        <div class="guest-block">
+          <div class="plus-one-toggle" onclick="togglePlusOne()" role="button" aria-pressed="false" id="toggle-btn">
+            <div class="toggle-pill" id="toggle"><div class="toggle-knob"></div></div>
+            <span id="toggle-label">I'm bringing a plus one</span>
+          </div>
+
+          <div id="plus-one-fields">
+            <p class="guest-block-label">Plus one details</p>
+            <div class="form-two-col">
+              <div class="form-row"><label for="g2-first">First name</label><input type="text" id="g2-first" name="plus_one_first" placeholder="James"></div>
+              <div class="form-row"><label for="g2-last">Last name</label><input type="text" id="g2-last" name="plus_one_last" placeholder="Smith"></div>
+            </div>
+            <div class="form-row">
+              <label for="g2-diet">Dietary requirements</label>
+              <select id="g2-diet" name="dietary_2">
+                <option value="">None</option>
+                <option>Vegetarian</option>
+                <option>Vegan</option>
+                <option>Gluten-free</option>
+                <option>Dairy-free</option>
+                <option>Nut allergy</option>
+                <option>Other (please note below)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Extras -->
+        <div class="guest-block">
+          <p class="guest-block-label">A couple more things</p>
+          <div class="form-row">
+            <label for="song">Song request for the dance floor</label>
+            <input type="text" id="song" name="song_request" placeholder="We'll do our best!">
+          </div>
+          <div class="form-row">
+            <label for="note">Anything else you'd like us to know?</label>
+            <textarea id="note" name="notes" rows="3" placeholder="Notes, allergies, transport questions…"></textarea>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-submit">Send RSVP</button>
+      </form>
+
+      <div id="rsvp-confirm" style="display:none;margin-top:2rem;color:var(--gold);font-family:var(--font-d);font-size:1.6rem;font-style:italic;line-height:1.4">
+        Thank you!<br>We can't wait to celebrate with you.
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── WHERE TO STAY ─── -->
+  <section id="stay">
+    <p class="sec-label">Accommodation</p>
+    <h2 class="sec-title">Where to stay</h2>
+    <div class="sec-div"></div>
+    <p style="margin-bottom:2rem;opacity:0.6;font-size:0.88rem;max-width:520px">
+      We've arranged room blocks at a couple of nearby hotels.
+      Please mention the wedding when booking to access the rate.
+    </p>
+    <div class="stay-grid">
+      <div class="stay-card">
+        <span class="stay-tag">Recommended</span>
+        <p class="stay-name">Hotel Wannsee</p>
+        <p class="stay-detail">10 min walk from venue</p>
+        <p class="stay-detail">Block rate: €140/night</p>
+        <p class="stay-detail">Code: SARAHJAMES26</p>
+        <a href="#" class="stay-link">Book a room →</a>
+      </div>
+      <div class="stay-card">
+        <span class="stay-tag">Budget-friendly</span>
+        <p class="stay-name">Pension am Park</p>
+        <p class="stay-detail">15 min walk from venue</p>
+        <p class="stay-detail">From €85/night</p>
+        <p class="stay-detail">Limited availability</p>
+        <a href="#" class="stay-link">View details →</a>
+      </div>
+      <div class="stay-card">
+        <span class="stay-tag">City centre</span>
+        <p class="stay-name">Airbnb / other</p>
+        <p class="stay-detail">Potsdam &amp; SW Berlin</p>
+        <p class="stay-detail">Great transport links</p>
+        <p class="stay-detail">S-Bahn: 25 min</p>
+        <a href="#" class="stay-link">Explore options →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════
+       REGISTRY — hidden until ready.
+       To show: remove the style="display:none" below,
+       and uncomment the nav link at the top.
+       ═══════════════════════════════════════════════════ -->
+  <div id="registry" style="display:none">
+    <div class="registry-section">
+      <p class="sec-label">Gifts</p>
+      <h2 class="sec-title">Registry &amp; honeymoon fund</h2>
+      <p>
+        Your presence is truly the greatest gift. If you'd like to
+        contribute, we have a small registry and a honeymoon fund
+        for our trip to Japan.
+      </p>
+      <div class="registry-btns">
+        <!-- Replace href="#" with your actual registry/fund URLs -->
+        <a href="#" class="btn-outline btn-gold">Honeymoon fund</a>
+        <a href="#" class="btn-outline">View registry</a>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <span class="footer-names">Sarah &amp; James</span>
+    14 June 2026 &nbsp;·&nbsp; Berlin &nbsp;·&nbsp; Questions?
+    <!-- Replace with your actual email -->
+    <a href="mailto:hello@sarahandjames.com" style="color:var(--gold);text-decoration:none">hello@sarahandjames.com</a>
+  </footer>
+
+</div><!-- end #site -->
+
+
+<script>
+  // ─── PASSWORD ──────────────────────────────────────
+  // Change this to whatever you want your site password to be
+  const SITE_PASSWORD = 'berlin2026';
+
+  function checkPw() {
+    const val = document.getElementById('pw-input').value;
+    if (val === SITE_PASSWORD) {
+      document.getElementById('gate').style.display = 'none';
+      document.getElementById('site').style.display = 'block';
+    } else {
+      const err = document.getElementById('gate-error');
+      err.style.opacity = '1';
+      document.getElementById('pw-input').value = '';
+      setTimeout(() => { err.style.opacity = '0'; }, 2500);
+    }
+  }
+
+  // ─── PLUS ONE TOGGLE ───────────────────────────────
+  function togglePlusOne() {
+    const pill    = document.getElementById('toggle');
+    const fields  = document.getElementById('plus-one-fields');
+    const label   = document.getElementById('toggle-label');
+    const btn     = document.getElementById('toggle-btn');
+    const isOn    = pill.classList.toggle('on');
+    fields.style.display = isOn ? 'block' : 'none';
+    label.textContent    = isOn ? 'Bringing a plus one' : "I'm bringing a plus one";
+    btn.setAttribute('aria-pressed', isOn);
+  }
+
+  // ─── RSVP SUBMIT ───────────────────────────────────
+  // This currently just shows a confirmation message.
+  // To send responses to your email, sign up at formspree.io,
+  // get your form ID, then in the <form> tag above replace:
+  //   onsubmit="handleRsvp(event)"
+  // with:
+  //   action="https://formspree.io/f/YOUR_FORM_ID" method="POST"
+  function handleRsvp(e) {
+    e.preventDefault();
+    document.getElementById('rsvp-form').style.display = 'none';
+    document.getElementById('rsvp-confirm').style.display = 'block';
+  }
+</script>
+</body>
+</html>
