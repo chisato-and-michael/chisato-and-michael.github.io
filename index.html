@@ -695,12 +695,12 @@
         <div class="guest-block">
           <p class="guest-block-label">Your details</p>
           <div class="form-two-col">
-            <div class="form-row"><label for="g1-first">First name</label><input type="text" id="g1-first" name="first_name" placeholder="Your first name"></div>
-            <div class="form-row"><label for="g1-last">Last name</label><input type="text" id="g1-last" name="last_name" placeholder="Your last name"></div>
+            <div class="form-row"><label for="g1-first">First name</label><input type="text" id="g1-first" name="first_name" required placeholder="Your first name"></div>
+            <div class="form-row"><label for="g1-last">Last name</label><input type="text" id="g1-last" name="last_name" required placeholder="Your last name"></div>
           </div>
           <div class="form-row">
             <label for="g1-email">Email address</label>
-            <input type="email" id="g1-email" name="email" placeholder="abc@example.com">
+            <input type="email" id="g1-email" name="email" required placeholder="abc@example.com">
           </div>
           <div class="form-row">
             <label for="g1-diet">Dietary requirements</label>
@@ -761,7 +761,7 @@
       </form>
 
       <div id="rsvp-confirm" style="display:none;margin-top:2rem;color:var(--gold);font-family:var(--font-d);font-size:1.6rem;line-height:1.4">
-        Thank you! We will more details as the day gets closer.<br>We can't wait to celebrate with you.
+        Thank you!<br>We will share more details as the day gets closer.<br>We can't wait to celebrate with you.
       </div>
     </div>
   </div>
@@ -903,28 +903,43 @@
   
   // ─── PLUS ONE TOGGLE ───────────────────────────────
   function togglePlusOne() {
-    const pill    = document.getElementById('toggle');
-    const fields  = document.getElementById('plus-one-fields');
-    const label   = document.getElementById('toggle-label');
-    const btn     = document.getElementById('toggle-btn');
-    const isOn    = pill.classList.toggle('on');
-    fields.style.display = isOn ? 'block' : 'none';
-    label.textContent    = isOn ? 'Bringing a plus one' : "I'm bringing a plus one";
-    btn.setAttribute('aria-pressed', isOn);
-  }
+   const pill    = document.getElementById('toggle');
+   const fields  = document.getElementById('plus-one-fields');
+   const label   = document.getElementById('toggle-label');
+   const btn     = document.getElementById('toggle-btn');
+   const isOn    = pill.classList.toggle('on');
+   fields.style.display = isOn ? 'block' : 'none';
+   label.textContent    = isOn ? 'Bringing a plus one' : "I'm bringing a plus one";
+   btn.setAttribute('aria-pressed', isOn);
+ 
+   // Add/remove required on plus one name fields
+   const g2first = document.getElementById('g2-first');
+   const g2last  = document.getElementById('g2-last');
+   g2first.required = isOn;
+   g2last.required  = isOn;
+ }
 
   // ─── RSVP SUBMIT ───────────────────────────────────
-  // This currently just shows a confirmation message.
-  // To send responses to your email, sign up at formspree.io,
-  // get your form ID, then in the <form> tag above replace:
-  //   onsubmit="handleRsvp(event)"
-  // with:
-  //   action="https://formspree.io/f/YOUR_FORM_ID" method="POST"
-  function handleRsvp(e) {
-    e.preventDefault();
-    document.getElementById('rsvp-form').style.display = 'none';
-    document.getElementById('rsvp-confirm').style.display = 'block';
-  }
+  async function handleRsvp(e) {
+  e.preventDefault();
+   const form = document.getElementById('rsvp-form');
+   const data = new FormData(form);
+   try {
+     const response = await fetch('https://api.web3forms.com/submit', {
+       method: 'POST',
+       body: data
+     });
+     const result = await response.json();
+     if (result.success) {
+       form.style.display = 'none';
+       document.getElementById('rsvp-confirm').style.display = 'block';
+     } else {
+       alert('Something went wrong — please try again or email us directly.');
+     }
+   } catch (error) {
+     alert('Something went wrong — please try again or email us directly.');
+   }
+ }
 </script>
 </body>
 </html>
