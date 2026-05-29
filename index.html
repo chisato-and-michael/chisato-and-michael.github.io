@@ -10,13 +10,31 @@
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+ @font-face {
+  font-family: 'Berlin';
+  src: url('BerlinTypeWeb-Regular.woff') format('woff');
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: 'Berlin';
+  src: url('BerlinTypeWeb-Regular.woff') format('woff');
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: 'Berlin';
+  src: url('BerlinTypeWeb-Bold.woff') format('woff');
+  font-weight: 600;
+}
+ 
   :root {
     --teal: #506A69;
     --cream: #F6F3EE;
     --gold: #D6B87A;
     --light: #F6F3EE;
-    --font-d: 'Cormorant Garamond', serif;
-    --font-b: 'Jost', sans-serif;
+    --font-d: 'Berlin', serif;
+    --font-b: 'Berlin', sans-serif;
   }
 
   body {
