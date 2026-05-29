@@ -671,20 +671,20 @@
       <form id="rsvp-form" action="https://api.web3forms.com/submit" method="POST" onsubmit="handleRsvp(event)">
       <input type="hidden" name="access_key" value="e6f1c703-e6d1-4fdd-84df-45446503ae8a">
       <input type="hidden" name="subject" value="New RSVP: Chisato & Michael">
-
-        <div class="form-row">
+      
+       <div class="form-row">
          <label>Will you be attending?</label>
-         <div style="display:flex;gap:2rem;margin-top:0.3rem;flex-wrap:wrap;">
-           <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;color:var(--light);opacity:0.8;font-size:0.82rem;">
-            <input type="radio" name="attending" value="yes" checked style="width:16px;height:16px;accent-color:var(--gold);cursor:pointer;">
-            Joyfully accept
+          <div style="display:flex;gap:1rem;margin-top:0.5rem;flex-wrap:wrap;">
+           <label id="opt-yes" onclick="selectAttendance('yes')" style="display:flex;align-items:center;gap:0.6rem;cursor:pointer;padding:0.5rem 1.2rem;border:1px solid rgba(246,243,238,0.25);transition:all 0.2s;font-size:0.82rem;color:var(--light);opacity:0.8;user-select:none;">
+            <input type="radio" name="attending" value="yes" checked style="display:none;">
+             Joyfully accept
            </label>
-           <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;color:var(--light);opacity:0.8;font-size:0.82rem;">
-            <input type="radio" name="attending" value="no" style="width:16px;height:16px;accent-color:var(--gold);cursor:pointer;">
-            Regretfully decline
-          </label>
-        </div>
-       </div>
+           <label id="opt-no" onclick="selectAttendance('no')" style="display:flex;align-items:center;gap:0.6rem;cursor:pointer;padding:0.5rem 1.2rem;border:1px solid rgba(246,243,238,0.25);transition:all 0.2s;font-size:0.82rem;color:var(--light);opacity:0.8;user-select:none;">
+            <input type="radio" name="attending" value="no" style="display:none;">
+             Regretfully decline
+           </label>
+         </div>
+      </div>
 
         <!-- Guest 1 -->
         <div class="guest-block">
@@ -870,6 +870,32 @@
     }
   }
 
+  // ─── RSVP buttons ──────────────────────────────────────
+   function selectAttendance(val) {
+    const yes = document.getElementById('opt-yes');
+    const no  = document.getElementById('opt-no');
+    if (val === 'yes') {
+     yes.style.background = 'var(--gold)';
+     yes.style.color = 'var(--cream)';
+     yes.style.opacity = '1';
+     no.style.background = 'transparent';
+     no.style.color = 'var(--light)';
+     no.style.opacity = '0.8';
+     yes.querySelector('input').checked = true;
+   } else {
+     no.style.background = 'var(--gold)';
+     no.style.color = 'var(--cream)';
+     no.style.opacity = '1';
+     yes.style.background = 'transparent';
+     yes.style.color = 'var(--light)';
+     yes.style.opacity = '0.8';
+     no.querySelector('input').checked = true;
+   }
+ }
+
+ // Set initial state
+ document.addEventListener('DOMContentLoaded', () => selectAttendance('yes'));
+  
   // ─── PLUS ONE TOGGLE ───────────────────────────────
   function togglePlusOne() {
     const pill    = document.getElementById('toggle');
