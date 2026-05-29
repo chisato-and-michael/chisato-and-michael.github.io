@@ -723,7 +723,7 @@
           </div>
 
           <div id="plus-one-fields">
-            <p class="guest-block-label">Additional guest details</p>
+            <p class="guest-block-label">Second guest details</p>
             <div class="form-two-col">
               <div class="form-row"><label for="g2-first">First name</label><input type="text" id="g2-first" name="plus_one_first" placeholder="James"></div>
               <div class="form-row"><label for="g2-last">Last name</label><input type="text" id="g2-last" name="plus_one_last" placeholder="Smith"></div>
@@ -905,7 +905,7 @@
    const btn     = document.getElementById('toggle-btn');
    const isOn    = pill.classList.toggle('on');
    fields.style.display = isOn ? 'block' : 'none';
-   label.textContent    = isOn ? 'Bringing a plus one' : "I'm bringing a plus one";
+   label.textContent    = isOn ? 'Bringing a plus one' : "Second guest (if included in your invitation)";
    btn.setAttribute('aria-pressed', isOn);
  
    // Add/remove required on plus one name fields
