@@ -673,16 +673,18 @@
       <input type="hidden" name="subject" value="New RSVP: Chisato & Michael">
 
         <div class="form-row">
-          <label>Will you be attending?</label>
-          <div class="radio-group">
-           <label for="attend-yes">
-             <input type="radio" id="attend-yes" name="attending" value="yes" checked> Joyfully accept
+         <label>Will you be attending?</label>
+         <div style="display:flex;gap:2rem;margin-top:0.3rem;flex-wrap:wrap;">
+           <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;color:var(--light);opacity:0.8;font-size:0.82rem;">
+            <input type="radio" name="attending" value="yes" checked style="width:16px;height:16px;accent-color:var(--gold);cursor:pointer;">
+            Joyfully accept
            </label>
-           <label for="attend-no">
-            <input type="radio" id="attend-no" name="attending" value="no"> Regretfully decline
-           </label>
-          </div>       
+           <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;color:var(--light);opacity:0.8;font-size:0.82rem;">
+            <input type="radio" name="attending" value="no" style="width:16px;height:16px;accent-color:var(--gold);cursor:pointer;">
+            Regretfully decline
+          </label>
         </div>
+       </div>
 
         <!-- Guest 1 -->
         <div class="guest-block">
