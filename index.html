@@ -237,16 +237,18 @@
     gap: 1.5rem;
   }
   .info-card {
-    background: var(--teal);
-    color: var(--light);
+    background: transparent;
+    color: var(--teal);
     padding: 2rem 1.5rem;
     border-radius: 2px;
+    border: 1px solid rgba(80,106,105,0.18);
   }
   .info-card-icon {
     font-size: 0.65rem;
     letter-spacing: 0.15em;
     text-transform: uppercase;
-    color: var(--gold);
+    color: var(--teal);
+    obacity: 0.55;
     margin-bottom: 0.6rem;
     opacity: 0.85;
   }
@@ -565,7 +567,7 @@
      Change SITE_PASSWORD in the <script> at the bottom.
      ═══════════════════════════════════════════════════ -->
 <div id="gate">
-  <img src="olive.svg" style="width:140px;opacity:0.5;filter:invert(89%) sepia(4%) saturate(4440%) hue-rotate(346deg) brightness(92%) contrast(81%);margin-bottom:1rem;">
+  <!-- <img src="olive.svg" style="width:140px;opacity:0.5;filter:invert(89%) sepia(4%) saturate(4440%) hue-rotate(346deg) brightness(92%) contrast(81%);margin-bottom:1rem;"> -->
   <h1>Chisato &amp; Michael</h1>
   <p class="gate-sub">Enter the password to continue</p>
   <input type="password" id="pw-input" placeholder="password"
@@ -632,6 +634,10 @@
         <!-- <p class="info-card-sub">Garden-friendly footwear</p> -->
       </div>
     </div>
+
+   <p style="margin-top:2rem;font-size:0.78rem;opacity:0.45;font-style:italic;">
+    This page will be updated with more details as the day gets closer.
+   </p>
 
   <!-- ═══════════════════════════════════════════════════
        Schedule — hidden until ready.
